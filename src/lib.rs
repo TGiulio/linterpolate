@@ -41,6 +41,13 @@ pub fn get_y_from_x(line: Line, x: f64) -> f64 {
     x * line.m + line.q
 }
 
+pub fn get_x_from_y(line: Line, y: f64) -> Option<f64> {
+    if line.m == 0.0 {
+        return None;
+    }
+    return Some((y - line.q) / line.m);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -112,6 +119,29 @@ mod tests {
         for (line, x, y, message) in test_cases {
             assert_eq!(
                 get_y_from_x(line, x),
+                y,
+                "test failed when testing {}",
+                message
+            );
+        }
+    }
+
+    #[test]
+    fn get_x_from_y_test() {
+        let test_cases = vec![
+            (Line { m: 1.0, q: 0.0 }, 1.0, Some(1.0), "slope = 1 q = 0"),
+            (Line { m: 2.0, q: -2.0 }, 8.0, Some(5.0), "slope = 2 q = -2"),
+            (
+                Line { m: -1.5, q: 5.0 },
+                11.0,
+                Some(-4.0),
+                "slope = 1 q = 0",
+            ),
+            (Line { m: 0.0, q: 5.0 }, 5.0, None, "slope = 0 q = 5"),
+        ];
+        for (line, x, y, message) in test_cases {
+            assert_eq!(
+                get_x_from_y(line, x),
                 y,
                 "test failed when testing {}",
                 message
