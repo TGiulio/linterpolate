@@ -37,6 +37,10 @@ pub fn get_line_from_point_and_slope(x: f64, y: f64, slope: f64) -> Line {
     }
 }
 
+pub fn get_y_from_x(line: Line, x: f64) -> f64 {
+    x * line.m + line.q
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -91,6 +95,24 @@ mod tests {
             assert_eq!(
                 get_intercept(x, y, slope),
                 result,
+                "test failed when testing {}",
+                message
+            );
+        }
+    }
+
+    #[test]
+    fn get_y_from_x_test() {
+        let test_cases = vec![
+            (Line { m: 1.0, q: 0.0 }, 1.0, 1.0, "slope = 1 q = 0"),
+            (Line { m: 2.0, q: -2.0 }, 5.0, 8.0, "slope = 2 q = -2"),
+            (Line { m: -1.5, q: 5.0 }, -4.0, 11.0, "slope = 1 q = 0"),
+            (Line { m: 0.0, q: 5.0 }, 125435.0, 5.0, "slope = 0 q = 5"),
+        ];
+        for (line, x, y, message) in test_cases {
+            assert_eq!(
+                get_y_from_x(line, x),
+                y,
                 "test failed when testing {}",
                 message
             );
