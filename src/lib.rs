@@ -1,6 +1,6 @@
 pub struct Line {
-    m: f64,
-    q: f64,
+    pub m: f64,
+    pub q: f64,
 }
 
 pub fn get_slope(x1: f64, y1: f64, x2: f64, y2: f64) -> Option<f64> {
